@@ -2,20 +2,18 @@
 
 namespace app\model;
 
-use app\engine\Db;
 
-class Product
+class Product extends Model
 {
     public $id;
     public $name;
     public $description;
     public $price;
 
-    public function delete()
+    public function getTableName()
     {
-        $sql = 'DELETE';
-        $db = new Db();
-        $db->execute($sql);
+        return 'product';
     }
+
 
 }
