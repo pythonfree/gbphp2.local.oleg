@@ -1,17 +1,19 @@
 <?php
 
+include __DIR__ . '/../config/config.php';
 include __DIR__ . '/../engine/Autoload.php';
+use app\engine\Autoload;
 spl_autoload_register([new Autoload(), 'loadClass']);
 
-use \app\engine\Db;
 use \app\model\Product;
 use \app\model\Users;
 
 
 $product = new Product();
-$users = new Users();
+var_dump($product->getOne(2));
 
 
+die;
 //CREATE
 $product = new Product('Чай', 'Цейлонский', '25');
 $product->insert();
