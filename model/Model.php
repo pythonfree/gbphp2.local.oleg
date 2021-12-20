@@ -5,7 +5,6 @@ namespace app\model;
 
 
 use app\engine\Db;
-use app\interfaces\ILog;
 use app\interfaces\IModel;
 
 abstract class Model implements IModel
@@ -14,9 +13,9 @@ abstract class Model implements IModel
 
     abstract public function getTableName();
 
-    public function __construct(Db $db)
+    public function __construct()
     {
-        $this->db = $db;
+        $this->db = new Db();
     }
 
     public function getOne($id)
@@ -33,5 +32,19 @@ abstract class Model implements IModel
         return $this->db->queryAll($sql);
     }
 
+    public function insert()
+    {
+
+    }
+
+    public function update()
+    {
+
+    }
+
+    public function delete()
+    {
+        $sql = "WHERE id = {$this->id}";
+    }
 
 }

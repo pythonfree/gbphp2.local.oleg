@@ -3,6 +3,26 @@
 include __DIR__ . '/../engine/Autoload.php';
 spl_autoload_register([new Autoload(), 'loadClass']);
 
-$product = new \app\model\Product(new \app\engine\Db());
+use \app\engine\Db;
+use \app\model\Product;
+use \app\model\Users;
 
-var_dump($product instanceof \app\model\Product);
+
+$product = new Product();
+$users = new Users();
+
+
+//CREATE
+$product = new Product('Чай', 'Цейлонский', '25');
+$product->insert();
+
+//READ
+$product = new Product();
+$product->getOne(4);
+
+//UPDATE
+$product->name = 'Чай2';
+$product->update();
+
+//DELETE
+$product->delete();
