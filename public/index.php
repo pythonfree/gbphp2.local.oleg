@@ -2,16 +2,28 @@
 
 include __DIR__ . '/../config/config.php';
 include __DIR__ . '/../engine/Autoload.php';
+
 use app\engine\Autoload;
+use app\model\{Product,User};
+
+
 spl_autoload_register([new Autoload(), 'loadClass']);
 
-use \app\model\Product;
-use \app\model\Users;
 
+$product = new Product('Чай', 'Цейлонский', '25');
+var_dump($product);
+$product->save();
+var_dump($product);
+die;
 
 $product = new Product();
-var_dump($product->getOne(2));
+var_dump($product->getOne(1));
+var_dump($product->getAll());
 
+var_dump($product);
+
+$user = new User();
+var_dump($user->getOne(1));
 
 die;
 //CREATE

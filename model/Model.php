@@ -4,47 +4,18 @@
 namespace app\model;
 
 
-use app\engine\Db;
 use app\interfaces\IModel;
 
 abstract class Model implements IModel
 {
-    protected $db;
-
-    abstract public function getTableName();
-
-    public function __construct()
+    public function __set($name, $value)
     {
-        $this->db = new Db();
+        //TODO if ($name == $id) ..... запретить
+        $this->$name = $value;
     }
 
-    public function getOne($id)
+    public function __get($name)
     {
-        $tableName = $this->getTableName();
-        $sql = "SELECT * FROM {$tableName} WHERE id = :id";
-        return $this->db->queryOne($sql, ['id' => $id]);
+        return $this->$name;
     }
-
-    public function getAll()
-    {
-        $tableName = $this->getTableName();
-        $sql = "SELECT * FROM {$tableName}";
-        return $this->db->queryAll($sql);
-    }
-
-    public function insert()
-    {
-
-    }
-
-    public function update()
-    {
-
-    }
-
-    public function delete()
-    {
-        $sql = "WHERE id = {$this->id}";
-    }
-
 }

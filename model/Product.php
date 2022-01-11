@@ -3,7 +3,7 @@
 namespace app\model;
 
 
-class Product extends Model
+class Product extends DbModel
 {
     public $id;
     public $name;
@@ -12,14 +12,13 @@ class Product extends Model
 
     public function __construct($name = null, $description = null, $price = null)
     {
-        parent::__construct();
         $this->name = $name;
         $this->description = $description;
         $this->price = $price;
     }
 
 
-    public function getTableName()
+    public static function getTableName()
     {
         return 'products';
     }

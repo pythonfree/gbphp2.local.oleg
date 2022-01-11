@@ -2,6 +2,8 @@
 
 namespace app\engine;
 
+use app\traits\TSingleton;
+
 class Db
 {
 
@@ -14,12 +16,14 @@ class Db
         'charset' => 'utf8',
     ];
 
+    use TSingleton;
+
     protected $connection = null; //PDO
 
     protected function getConnection()
     {
         if (is_null($this->connection)) {
-            print_r('Подключаюсь к БД...');
+            //print_r('Подключаюсь к БД...');
             $this->connection = new \PDO(
                 $this->prepareDsnString(),
                 $this->config['login'],
@@ -28,6 +32,11 @@ class Db
             $this->connection->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
         }
         return $this->connection;
+    }
+
+    public function lastInsertId()
+    {
+        return $this->connection->lastInsertId();
     }
 
     protected function prepareDsnString()
@@ -47,18 +56,25 @@ class Db
         return $stmt;
     }
 
-    public function queryOne($sql, $param)
+    public function queryOne($sql, $params)
     {
-        return $this->query($sql, $param)->fetch();
+        return $this->query($sql, $params)->fetch();
     }
 
-    public function queryAll($sql)
+    public function queryOneObject($sql, $params, $class)
     {
-        return $sql;
+        $stmt = $this->query($sql, $params);
+        $stmt->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $class);
+        return $stmt->fetch();
     }
 
-    public function execute($sql)
+    public function queryAll($sql, $params = [])
     {
-        echo 'Выполняю запрос без возврата набора, например, удаляю что-то...';
+        return $this->query($sql, $params)->fetchAll();
+    }
+
+    public function execute($sql, $params = [])
+    {
+        return $this->query($sql, $params)->rowCount();
     }
 }
