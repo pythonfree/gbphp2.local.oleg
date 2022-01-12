@@ -4,12 +4,85 @@ include __DIR__ . '/../config/config.php';
 include __DIR__ . '/../engine/Autoload.php';
 
 use app\engine\Autoload;
-use app\model\{Product,User};
+use app\model\{Product};
 
 
 spl_autoload_register([new Autoload(), 'loadClass']);
 
 
+$controllerName = $_GET['c'] ?: 'product';
+$actionName = $_GET['a'];
+$controllerName = CONTROLLERS_NAMESPACE . ucfirst($controllerName) . 'Controller';
+
+if (class_exists($controllerName)) {
+    $controller = new $controllerName();
+    $controller->runAction($actionName);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+die;
 $product = new Product('Чай', 'Цейлонский', '25');
 var_dump($product);
 $product->save();
