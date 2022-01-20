@@ -6,9 +6,14 @@ namespace app\model;
 
 class User extends DbModel
 {
-    public $id;
-    public $login;
-    public $pass;
+    protected $id;
+    protected $login;
+    protected $pass;
+
+    protected $props = [
+        'login' => false,
+        'pass' => false,
+    ];
 
     public static function getTableName()
     {

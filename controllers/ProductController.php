@@ -4,33 +4,32 @@
 namespace app\controllers;
 
 
-class ProductController
+use app\model\Product;
+
+class ProductController extends Controller
 {
-    private $action;
-    private $defaultAction = 'index';
-
-    public function runAction($action = null)
-    {
-        $this->action = $action ?: $this->defaultAction;
-        $method = 'action' . ucfirst($this->action);
-        //TODO method_exists($this, $method) тоже сработает
-        if (method_exists(static::class, $method)) {
-            $this->$method();
-        }
-    }
-
     public function actionIndex()
     {
-        echo 'Главная';
+        echo $this->render('index');
     }
 
     public function actionCatalog()
     {
-        echo 'catalog';
+        $page = $_GET['page'] ?? 0;
+        $catalog = Product::getLimit(($page + 1) * PRODUCT_PER_PAGE);
+
+        echo $this->render('catalog', [
+            'catalog' => $catalog,
+            'page' => ++$page,
+        ]);
     }
 
     public function actionCard()
     {
-        echo 'card';
+        $id = $_GET['id'];
+        $good = Product::getOne($id);
+        echo $this->render('card', [
+            'good' => $good,
+        ]);
     }
 }

@@ -5,17 +5,19 @@ include __DIR__ . '/../engine/Autoload.php';
 
 use app\engine\Autoload;
 use app\model\{Product};
+use app\engine\Render;
 
 
 spl_autoload_register([new Autoload(), 'loadClass']);
 
-
-$controllerName = $_GET['c'] ?: 'product';
-$actionName = $_GET['a'];
+//TODO $controllerName = $_GET['c'] ?: 'product';
+$controllerName = $_GET['c'] ?? 'product';
+//TODO $actionName = $_GET['a'];
+$actionName = $_GET['a'] ?? 'index';
 $controllerName = CONTROLLERS_NAMESPACE . ucfirst($controllerName) . 'Controller';
 
 if (class_exists($controllerName)) {
-    $controller = new $controllerName();
+    $controller = new $controllerName(new Render());
     $controller->runAction($actionName);
 }
 
@@ -81,8 +83,10 @@ if (class_exists($controllerName)) {
 
 
 
-
 die;
+
+
+
 $product = new Product('Чай', 'Цейлонский', '25');
 var_dump($product);
 $product->save();

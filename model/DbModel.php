@@ -10,6 +10,13 @@ abstract class DbModel extends Model
 {
     abstract public static function getTableName();
 
+    public static function getLimit($page)
+    {
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName} LIMIT 0, ?";
+        return Db::getInstance()->queryLimit($sql, $page);
+    }
+
     public static function getOne($id)
     {
         $tableName = static::getTableName();
@@ -28,12 +35,9 @@ abstract class DbModel extends Model
     {
         $params = [];
         $columns = [];
-        $values = '';
 
-        foreach ($this as $key => $value) {
-            //TODO придумать, как задействовать только нужные поля
-            if ($key == 'id') continue;
-            $params[":{$key}"] = $value;
+        foreach ($this->props as $key => $value) {
+            $params[":{$key}"] = $key;
             $columns[] = "`$key`";
         }
 
@@ -51,12 +55,28 @@ abstract class DbModel extends Model
 
     public function update()
     {
-
+        $params = [];
+        $columns = [];
+        foreach ($this->props as $key => $value) {
+            if (!$value) continue;
+            $params[":{$key}"] = $this->$key;
+            $columns[] .= "`{$key}` = :{$key}";
+            $this->props[$key] = false;
+        }
+        $columns = implode(', ', $columns);
+        $params['id'] = $this->id;
+        $tableName = static::getTableName();
+        $sql = "UPDATE `{$tableName}` SET {$columns} WHERE `id` = :id";
+        //TODO сбросить props в исходное если изменение произойдет (транзакция?)
+        Db::getInstance()->execute($sql, $params);
+        return $this;
     }
 
     public function delete()
     {
-        $sql = "WHERE id = {$this->id}";
+        $tableName = static::getTableName();
+        $sql = "DELETE FROM {$tableName} WHERE id = :id";
+        return DB::getInstance()->execute($sql, [':id' => $this->id]);
     }
 
     public function save()

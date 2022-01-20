@@ -8,9 +8,13 @@ use app\interfaces\IModel;
 
 abstract class Model implements IModel
 {
+
+    protected $props = [];
+
     public function __set($name, $value)
     {
-        //TODO if ($name == $id) ..... запретить
+        //TODO проверить по props можно ли вообще менять это поле
+        $this->props[$name] = true;
         $this->$name = $value;
     }
 
