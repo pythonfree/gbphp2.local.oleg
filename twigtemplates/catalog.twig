@@ -1,0 +1,10 @@
+<h2>Каталог</h2>
+
+{% for item in catalog %}
+    <h2><a href="/product/card/?id={{ item.id }}">{{ item.name }}</a></h2>
+    <p>{{ item.description }}</p>
+    <p>Цена: {{ item.price }}</p>
+    <hr>
+{% endfor %}
+
+<a href="/product/catalog/?page={{ page }}">Далее</a>

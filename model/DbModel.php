@@ -17,6 +17,13 @@ abstract class DbModel extends Model
         return Db::getInstance()->queryLimit($sql, $page);
     }
 
+    public static function getWhere($name, $value)
+    {
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName} WHERE `{$name}` = :value ";
+        return Db::getInstance()->queryOneObject($sql, ['value' => $value], static::class);
+    }
+
     public static function getOne($id)
     {
         $tableName = static::getTableName();

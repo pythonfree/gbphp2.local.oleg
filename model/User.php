@@ -15,6 +15,11 @@ class User extends DbModel
         'pass' => false,
     ];
 
+    public static function auth($login, $pass)
+    {
+        $user = User::getWhere('login', $login);
+    }
+
     public static function isAuth()
     {
         return isset($_SESSION['login']);
