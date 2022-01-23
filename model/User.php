@@ -15,6 +15,16 @@ class User extends DbModel
         'pass' => false,
     ];
 
+    public static function isAuth()
+    {
+        return isset($_SESSION['login']);
+    }
+
+    public static function getName()
+    {
+        return $_SESSION['login'];
+    }
+
     public static function getTableName()
     {
         return 'users';

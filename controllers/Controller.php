@@ -22,7 +22,7 @@ class Controller
 
     public function runAction($action = null)
     {
-        $this->action = $action ?? $this->defaultAction;
+        $this->action = $action ?: $this->defaultAction;
         $method = 'action' . ucfirst($this->action);
         //TODO method_exists($this, $method) тоже сработает
         if (method_exists(static::class, $method)) {

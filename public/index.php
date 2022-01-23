@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 include __DIR__ . '/../config/config.php';
 include __DIR__ . '/../engine/Autoload.php';
@@ -10,14 +11,16 @@ use app\engine\Render;
 
 spl_autoload_register([new Autoload(), 'loadClass']);
 
-//TODO $controllerName = $_GET['c'] ?: 'product';
-$controllerName = $_GET['c'] ?? 'product';
-//TODO $actionName = $_GET['a'];
-$actionName = $_GET['a'] ?? 'index';
-$controllerName = CONTROLLERS_NAMESPACE . ucfirst($controllerName) . 'Controller';
+$url = explode('/', $_SERVER['REQUEST_URI']);
 
-if (class_exists($controllerName)) {
-    $controller = new $controllerName(new Render());
+
+$controllerName = $url[1] ?: 'product';
+$actionName = $url[2] ?? 'index';
+
+$controllerClass = CONTROLLERS_NAMESPACE . ucfirst($controllerName) . 'Controller';
+
+if (class_exists($controllerClass)) {
+    $controller = new $controllerClass(new Render());
     $controller->runAction($actionName);
 }
 
