@@ -4,9 +4,10 @@
 namespace app\model;
 
 
+use app\engine\Db;
+
 class Basket extends DbModel
 {
-
     protected $id;
     protected $session_id;
     protected $product_id;
@@ -16,11 +17,17 @@ class Basket extends DbModel
         'product_id' => false
     ];
 
-    public static function getBasket()
+    public function __construct($session_id = null, $product_id = null)
+    {
+        $this->session_id = $session_id;
+        $this->product_id = $product_id;
+    }
+
+    public static function getBasket($session_id)
     {
         $sql = "SELECT basket.id basket_id, products.id prod_id, products.name, products.description,
-        products.price FROM `basket`, `products` WHERE `session_id` = '111' AND basket.product_id = products.id";
-        return [];
+        products.price FROM `basket`, `products` WHERE `session_id` = :session AND basket.product_id = products.id";
+        return Db::getInstance()->queryAll($sql, ['session' => $session_id]);
     }
 
     public static function getSummBasket()

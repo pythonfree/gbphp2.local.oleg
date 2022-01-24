@@ -1,4 +1,3 @@
-<?php $auth = $auth ?? null; ?>
 <?php if ($auth): ?>
     Добро пожаловать <?= $username ?> <a href="/auth/logout">[Выход]</a>
 <?php else: ?>
@@ -10,4 +9,4 @@
 <?php endif; ?><br>
 <a href="/">Главная</a>
 <a href="/product/catalog">Каталог</a>
-<a href="/basket">Корзина</a><br>
+<a href="/basket">Корзина (<span id="count"><?=$count?></span>)</a><br>

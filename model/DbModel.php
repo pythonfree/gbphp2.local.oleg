@@ -24,6 +24,13 @@ abstract class DbModel extends Model
         return Db::getInstance()->queryOneObject($sql, ['value' => $value], static::class);
     }
 
+    public static function getCountWhere($name, $value)
+    {
+        $tableName = static::getTableName();
+        $sql = "SELECT count(id) as count FROM {$tableName} WHERE `{$name}` = :value ";
+        return Db::getInstance()->queryOne($sql, ['value' => $value])['count'];
+    }
+
     public static function getOne($id)
     {
         $tableName = static::getTableName();
@@ -44,7 +51,7 @@ abstract class DbModel extends Model
         $columns = [];
 
         foreach ($this->props as $key => $value) {
-            $params[":{$key}"] = $key;
+            $params[":{$key}"] = $this->$key;
             $columns[] = "`$key`";
         }
 

@@ -4,6 +4,8 @@
 namespace app\controllers;
 
 
+use app\model\User;
+
 class AuthController extends Controller
 {
     public function actionLogin()
@@ -11,7 +13,7 @@ class AuthController extends Controller
         $login = $_POST['login'];
         $pass = $_POST['pass'];
 
-        if (true) {
+        if (User::auth($login, $pass)) {
             header("Location:" . $_SERVER['HTTP_REFERER']);
         } else {
             die('Не верный логин пароль.');
@@ -20,6 +22,7 @@ class AuthController extends Controller
 
     public function actionLogout()
     {
-
+        session_destroy();
+        header('Location:' . $_SERVER['HTTP_REFERER']);
     }
 }

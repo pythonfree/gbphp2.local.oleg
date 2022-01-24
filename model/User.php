@@ -15,9 +15,16 @@ class User extends DbModel
         'pass' => false,
     ];
 
-    public static function auth($login, $pass)
+    public static function auth($login, $pass): bool
     {
         $user = User::getWhere('login', $login);
+        //TODO проверить по хешу
+        if ($pass == $user->pass) {
+            $_SESSION['login'] = $login;
+            $_SESSION['id'] = $user->id;
+            return true;
+        }
+        return false;
     }
 
     public static function isAuth()
@@ -27,7 +34,7 @@ class User extends DbModel
 
     public static function getName()
     {
-        return $_SESSION['login'];
+        return $_SESSION['login'] ?? null;
     }
 
     public static function getTableName()
