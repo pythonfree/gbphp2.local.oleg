@@ -4,14 +4,16 @@
 namespace app\controllers;
 
 
+use app\engine\Request;
 use app\model\User;
 
 class AuthController extends Controller
 {
     public function actionLogin()
     {
-        $login = $_POST['login'];
-        $pass = $_POST['pass'];
+        $request = new Request();
+        $login = $request->getParams()['login'];
+        $pass = $request->getParams()['pass'];
 
         if (User::auth($login, $pass)) {
             header("Location:" . $_SERVER['HTTP_REFERER']);

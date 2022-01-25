@@ -10,15 +10,14 @@ use app\engine\Autoload;
 use app\model\{Product};
 use app\engine\Render;
 use app\engine\TwigRender;
+use app\engine\Request;
 
 
 spl_autoload_register([new Autoload(), 'loadClass']);
 
-$url = explode('/', $_SERVER['REQUEST_URI']);
-
-
-$controllerName = $url[1] ?: 'product';
-$actionName = $url[2] ?? 'index';
+$request = new Request();
+$controllerName = $request->getControllerName() ?: 'product';
+$actionName = $request->getActionName();
 
 $controllerClass = CONTROLLERS_NAMESPACE . ucfirst($controllerName) . 'Controller';
 
