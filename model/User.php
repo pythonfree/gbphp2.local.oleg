@@ -18,8 +18,8 @@ class User extends DbModel
     public static function auth($login, $pass): bool
     {
         $user = User::getWhere('login', $login);
-        //TODO проверить по хешу
-        if ($pass == $user->pass) {
+
+        if (password_verify($pass, $user->pass)) {
             $_SESSION['login'] = $login;
             $_SESSION['id'] = $user->id;
             return true;
