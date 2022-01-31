@@ -15,16 +15,21 @@ use app\engine\Request;
 
 spl_autoload_register([new Autoload(), 'loadClass']);
 
-$request = new Request();
-$controllerName = $request->getControllerName() ?: 'product';
-$actionName = $request->getActionName();
+try {
+    $request = new Request();
+    $controllerName = $request->getControllerName() ?: 'product';
+    $actionName = $request->getActionName();
 
-$controllerClass = CONTROLLERS_NAMESPACE . ucfirst($controllerName) . 'Controller';
+    $controllerClass = CONTROLLERS_NAMESPACE . ucfirst($controllerName) . 'Controller';
 
-if (class_exists($controllerClass)) {
-    $controller = new $controllerClass(new Render());
-    $controller->runAction($actionName);
+    if (class_exists($controllerClass)) {
+        $controller = new $controllerClass(new Render());
+        $controller->runAction($actionName);
+    }
+} catch (\Throwable $e) {
+    var_dump($e);
 }
+
 
 
 
