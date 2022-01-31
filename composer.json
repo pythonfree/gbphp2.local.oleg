@@ -2,6 +2,12 @@
     "require": {
         "twig/twig": "3.2.1",
       "ext-pdo": "*",
-      "ext-json": "*"
+      "ext-json": "*",
+        "phpunit/phpunit": "^9.5"
+    },
+  "autoload": {
+    "psr-4": {
+      "app\\": ""
     }
+  }
 }
