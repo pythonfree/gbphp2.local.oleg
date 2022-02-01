@@ -7,18 +7,29 @@ use app\traits\TSingleton;
 class Db
 {
 
-    private $config = [
-        'driver' => 'mysql',
-        'host' => 'localhost:3306',
-        'login' => 'root',
-        'password' => 'root',
-        'database' => 'shop',
-        'charset' => 'utf8',
-    ];
+    private $config;
+// = [
+//        'driver' => 'mysql',
+//        'host' => 'localhost:3306',
+//        'login' => 'root',
+//        'password' => 'root',
+//        'database' => 'shop',
+//        'charset' => 'utf8',
+//    ];
 
-    use TSingleton;
+    //use TSingleton;
 
     protected $connection = null; //PDO
+
+    public function __construct($driver, $host, $login, $password, $database, $charset = 'utf8')
+    {
+        $this->config['driver'] = $driver;
+        $this->config['host'] = $host;
+        $this->config['login'] = $login;
+        $this->config['password'] = $password;
+        $this->config['database'] = $database;
+        $this->config['charset'] = $charset;
+    }
 
     protected function getConnection()
     {
