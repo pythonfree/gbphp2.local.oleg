@@ -6,6 +6,7 @@ namespace app\model;
 
 use app\engine\Db;
 use app\interfaces\IModel;
+use app\engine\App;
 
 abstract class Repository implements IModel
 {
@@ -13,35 +14,35 @@ abstract class Repository implements IModel
     {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} LIMIT 0, ?";
-        return Db::getInstance()->queryLimit($sql, $page);
+        return App::call()->db->queryLimit($sql, $page);
     }
 
     public function getWhere($name, $value)
     {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE `{$name}` = :value ";
-        return Db::getInstance()->queryOneObject($sql, ['value' => $value], $this->getEntityClass());
+        return App::call()->db->queryOneObject($sql, ['value' => $value], $this->getEntityClass());
     }
 
     public function getCountWhere($name, $value)
     {
         $tableName = $this->getTableName();
         $sql = "SELECT count(id) as count FROM {$tableName} WHERE `{$name}` = :value ";
-        return Db::getInstance()->queryOne($sql, ['value' => $value])['count'];
+        return App::call()->db->queryOne($sql, ['value' => $value])['count'];
     }
 
     public function getOne($id)
     {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName} WHERE id = :id";
-        return Db::getInstance()->queryOneObject($sql, ['id' => $id], $this->getEntityClass());
+        return App::call()->db->queryOneObject($sql, ['id' => $id], $this->getEntityClass());
     }
 
     public function getAll()
     {
         $tableName = $this->getTableName();
         $sql = "SELECT * FROM {$tableName}";
-        return Db::getInstance()->queryAll($sql);
+        return App::call()->db->queryAll($sql);
     }
 
     public function insert(Model $entity)
@@ -60,8 +61,8 @@ abstract class Repository implements IModel
         $tableName = $this->getTableName();
         $sql = "INSERT INTO {$tableName} ({$columns}) VALUES ({$values})";
 
-        Db::getInstance()->execute($sql, $params);
-        $entity->id = Db::getInstance()->lastInsertId();
+        App::call()->db->execute($sql, $params);
+        $entity->id = App::call()->db->lastInsertId();
     }
 
     public function update(Model $entity)
@@ -79,14 +80,14 @@ abstract class Repository implements IModel
         $tableName = $this->getTableName();
         $sql = "UPDATE `{$tableName}` SET {$columns} WHERE `id` = :id";
         //TODO сбросить props в исходное если изменение произойдет (транзакция?)
-        Db::getInstance()->execute($sql, $params);
+        App::call()->db->execute($sql, $params);
     }
 
     public function delete(Model $entity)
     {
         $tableName = $this->getTableName();
         $sql = "DELETE FROM {$tableName} WHERE id = :id";
-        return DB::getInstance()->execute($sql, [':id' => $entity->id]);
+        return App::call()->db->execute($sql, [':id' => $entity->id]);
     }
 
     public function save(Model $entity)

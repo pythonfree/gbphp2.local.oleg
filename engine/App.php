@@ -15,6 +15,7 @@ use app\traits\TSingleton;
  * @property BasketRepository $basketRepository
  * @property UserRepository $userRepository
  * @property ProductRepository $productRepository
+ * @property Session $session
  * @property Db $db
  */
 class App
@@ -30,6 +31,7 @@ class App
     {
         $this->config = $config;
         $this->components = new Storage();
+        $this->session->sessionStart();
         $this->runController();
     }
 
@@ -52,7 +54,7 @@ class App
     /**
      * $return static
      */
-    public function call()
+    public static function call()
     {
         return static::getInstance();
     }
@@ -72,6 +74,12 @@ class App
                 return $reflection->newInstanceArgs($params);
             }
         }
+    }
+
+    //Чтобы обращаться к компонентам как к свойства, переопределим геттер
+    public function __get($name)
+    {
+        return $this->components->get($name);
     }
 
 }

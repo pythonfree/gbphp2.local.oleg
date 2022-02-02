@@ -3,7 +3,8 @@
         "twig/twig": "3.2.1",
       "ext-pdo": "*",
       "ext-json": "*",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "robmorgan/phinx": "0.12.5"
     },
   "autoload": {
     "psr-4": {

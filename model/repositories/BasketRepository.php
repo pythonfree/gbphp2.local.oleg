@@ -3,9 +3,9 @@
 namespace app\model\repositories;
 
 
-use app\engine\Db;
 use app\model\Repository;
 use app\model\entities\Basket;
+use app\engine\App;
 
 class BasketRepository extends Repository
 {
@@ -14,7 +14,7 @@ class BasketRepository extends Repository
     {
         $sql = "SELECT basket.id basket_id, products.id prod_id, products.name, products.description,
         products.price FROM `basket`, `products` WHERE `session_id` = :session AND basket.product_id = products.id";
-        return Db::getInstance()->queryAll($sql, ['session' => $session_id]);
+        return App::call()->db->queryAll($sql, ['session' => $session_id]);
     }
 
     public static function getSummBasket()

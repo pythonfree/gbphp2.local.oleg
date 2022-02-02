@@ -14,7 +14,7 @@ class Render implements IRenderer
 
         extract($params);
 
-        $templatePath = TEMPLATE_DIR . $template . '.php';
+        $templatePath = App::call()->config['templates_dir'] . $template . '.php';
 
         if (is_readable($templatePath)) {
             include $templatePath;

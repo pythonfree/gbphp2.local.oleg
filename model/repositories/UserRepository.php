@@ -6,6 +6,7 @@ namespace app\model\repositories;
 
 use app\model\entities\User;
 use app\model\Repository;
+use app\engine\App;
 
 class UserRepository extends Repository
 {
@@ -14,8 +15,8 @@ class UserRepository extends Repository
         $user = $this->getWhere('login', $login);
 
         if (password_verify($pass, $user->pass)) {
-            $_SESSION['login'] = $login;
-            $_SESSION['id'] = $user->id;
+            App::call()->session->setSession('login', $login);
+            //$_SESSION['id'] = $user->id;
             return true;
         }
         return false;
